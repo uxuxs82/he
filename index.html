@@ -12,119 +12,12 @@
 <h2>обо мне</h2>
 <p>привет, я кароче ыхыхх, точнее сергей, я увлекаюсь программированием, ну еще я люблю гулять, не пью не курю, спортом НЕ занимаюсь, люблю угарать над тупыми детьми, в игры не играю, ещё я умный</p>
 
-<h2>iq</h2>
-<p>116</p>
-<div id="canvas-wrap"></div>
-
 <h2>контакты</h2>
 <p><a href="https://t.me/sgqnu">t.me/sgqnu</a></p>
 
 <p id="counter">заходов: загрузка...</p>
 
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
-</script>
-<script type="module">
-import * as THREE from 'three';
-
-const wrap = document.getElementById('canvas-wrap');
-const w = 600, h = 420;
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(40, w/h, 0.1, 100);
-camera.position.set(0, 1.8, 4.5);
-camera.lookAt(0, 0.6, 0);
-
-const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-renderer.setSize(w, h);
-renderer.setClearColor(0x000000, 0);
-wrap.appendChild(renderer.domElement);
-
-// свет
-scene.add(new THREE.AmbientLight(0xffffff, 1.0));
-const l1 = new THREE.DirectionalLight(0xffffff, 1.2); l1.position.set(3, 5, 4); scene.add(l1);
-const l2 = new THREE.DirectionalLight(0xffffff, 0.6); l2.position.set(-3, 2, -4); scene.add(l2);
-
-// текстура — дерево (Wikimedia, CORS разрешён)
-const loader = new THREE.TextureLoader();
-loader.setCrossOrigin('anonymous');
-const texture = loader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Wood_texture.jpg/512px-Wood_texture.jpg');
-texture.colorSpace = THREE.SRGBColorSpace;
-
-const mat = new THREE.MeshStandardMaterial({
-  map: texture,
-  roughness: 0.7,
-  metalness: 0.05
-});
-
-// ——— процедурный король ———
-const kingGroup = new THREE.Group();
-
-// основание
-const base = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 0.25, 32), mat);
-base.position.y = 0.125;
-kingGroup.add(base);
-
-// ступенька
-const step = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 0.12, 32), mat);
-step.position.y = 0.31;
-kingGroup.add(step);
-
-// тело
-const body = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.4, 0.9, 32), mat);
-body.position.y = 0.82;
-kingGroup.add(body);
-
-// шея / переход
-const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.15, 32), mat);
-neck.position.y = 1.35;
-kingGroup.add(neck);
-
-// корона (нижняя часть)
-const crownBase = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.28, 0.18, 32), mat);
-crownBase.position.y = 1.52;
-kingGroup.add(crownBase);
-
-// зубцы короны
-const teethCount = 6;
-for (let i = 0; i < teethCount; i++) {
-  const angle = (i / teethCount) * Math.PI * 2;
-  const tooth = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 0.22, 8), mat);
-  tooth.position.set(Math.cos(angle) * 0.24, 1.72, Math.sin(angle) * 0.24);
-  kingGroup.add(tooth);
-}
-
-// верхушка
-const top = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), mat);
-top.position.y = 1.85;
-kingGroup.add(top);
-
-kingGroup.position.x = -0.8; // немного влево
-scene.add(kingGroup);
-
-// ——— вращение вокруг своей оси (Y) ———
-let angle = 0;
-function animate() {
-  requestAnimationFrame(animate);
-  angle += 0.008;
-  kingGroup.rotation.y = angle;
-  renderer.render(scene, camera);
-}
-animate();
-
-// адаптив
-function onResize(){
-  const nw = wrap.clientWidth || w;
-  renderer.setSize(nw, h);
-  camera.aspect = nw / h;
-  camera.updateProjectionMatrix();
-}
-window.addEventListener('resize', onResize);
-setTimeout(onResize, 100);
-</script>
-
 <script>
-// счётчик через Tallywire (замена мёртвого countapi.xyz)
 fetch('https://tallywire.cronpulse.workers.dev/hit/uxuxx.k.vu/visits')
   .then(r => r.json())
   .then(d => {
