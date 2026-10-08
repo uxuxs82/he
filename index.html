@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ыхыхх / uxuxx</title>
+<style>
+body{font-family:monospace;background:#fff;color:#000;max-width:800px;margin:0 auto;padding:20px;line-height:1.6}
+h1,h2{margin:0 0 10px}
+h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:#666;border-bottom:1px solid #000;padding-bottom:4px;margin-top:30px}
+a{color:#000}
+#canvas-wrap{margin:20px 0;border:1px solid #000}
+canvas{display:block;width:100%;height:auto}
+</style>
+</head>
+<body>
+
+<h1>ыхыхх / uxuxx</h1>
+
+<h2>обо мне</h2>
+<p>привет, я кароче ыхыхх, точнее сергей, я увлекаюсь программированием, ну еще я люблю гулять, не пью не курю, спортом НЕ занимаюсь, люблю угарать над тупыми детьми, в игры не играю, ещё я умный</p>
+
+<h2>iq</h2>
+<p>116</p>
+<div id="canvas-wrap"></div>
+
+<h2>контакты</h2>
+<p><a href="https://t.me/sgqnu">t.me/sgqnu</a></p>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const wrap = document.getElementById('canvas-wrap');
+const w = wrap.clientWidth || 600;
+const h = 340;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, w/h, 0.1, 100);
+camera.position.set(0, 2, 9);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setSize(w, h);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+wrap.appendChild(renderer.domElement);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+const l1 = new THREE.DirectionalLight(0xffffff, 1.4); l1.position.set(5,5,5); scene.add(l1);
+const l2 = new THREE.DirectionalLight(0xffffff, 0.5); l2.position.set(-5,-5,-5); scene.add(l2);
+
+const loader = new THREE.TextureLoader();
+const texture = loader.load('https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg');
+texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set(3, 2);
+texture.colorSpace = THREE.SRGBColorSpace;
+
+const mat = new THREE.MeshStandardMaterial({
+  map: texture,
+  roughness: 0.35,
+  metalness: 0.05
+});
+
+const ringGeo = new THREE.TorusGeometry(1.1, 0.38, 28, 80);
+const rings = [];
+const positions = [-3.2, 0, 3.2];
+const axes = [new THREE.Vector3(1,0.3,0), new THREE.Vector3(0,1,0.2), new THREE.Vector3(0.4,0,1)];
+
+positions.forEach((x, i) => {
+  const mesh = new THREE.Mesh(ringGeo, mat.clone());
+  mesh.position.set(x, 0, 0);
+  mesh.rotation.order = 'ZXY';
+  mesh.userData.axis = axes[i];
+  mesh.userData.speed = 0.01 + i * 0.004;
+  scene.add(mesh);
+  rings.push(mesh);
+});
+
+scene.rotation.x = -0.25;
+
+function animate() {
+  requestAnimationFrame(animate);
+  rings.forEach(r => {
+    r.rotateOnWorldAxis(r.userData.axis, r.userData.speed);
+  });
+  renderer.render(scene, camera);
+}
+animate();
+
+function onResize(){
+  const nw = wrap.clientWidth;
+  if(nw < 10) return;
+  renderer.setSize(nw, h);
+  camera.aspect = nw / h;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', onResize);
+setTimeout(onResize, 100);
+</script>
+
+</body>
+  </html>
