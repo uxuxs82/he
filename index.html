@@ -4,15 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ыхыхх / uxuxx</title>
-<style>
-body{font-family:monospace;margin:20px;max-width:800px;line-height:1.6}
-h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:#666;border-bottom:1px solid #000;padding-bottom:4px;margin-top:30px}
-a{color:#000}
-#canvas-wrap{margin:20px 0;border:1px solid #000}
-canvas{display:block;width:100%;height:auto}
-#counter{font-size:12px;color:#666;margin-top:10px}
-.tg{vertical-align:middle;margin-left:6px}
-</style>
 </head>
 <body>
 
@@ -27,10 +18,10 @@ canvas{display:block;width:100%;height:auto}
 
 <h2>контакты</h2>
 <p><a href="https://t.me/sgqnu">t.me/sgqnu</a>
-<svg class="tg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.717-.962 4.084-1.36 5.76-.168.7-.438 1.04-.72 1.06-.6.06-1.08-.36-1.68-.72-.96-.6-1.5-.96-2.46-1.56-.96-.6-1.68-.96-1.68-1.56 0-.3.24-.6.72-.96.48-.36 1.08-.72 1.44-.96.36-.24.72-.6.96-1.08.24-.48.36-.96.36-1.32 0-.36-.12-.72-.36-.96-.24-.24-.6-.36-1.08-.36-.48 0-.96.12-1.44.36-.48.24-.96.6-1.44.96-.48.36-.96.72-1.44 1.08-.48.36-.96.6-1.44.72-.48.12-.96.12-1.44 0-.48-.12-.84-.36-1.08-.72-.24-.36-.36-.84-.36-1.32 0-.48.12-.96.36-1.44.24-.48.6-.96 1.08-1.44.48-.48 1.08-.96 1.8-1.44.72-.48 1.56-.84 2.52-1.08.96-.24 1.92-.36 2.88-.36.96 0 1.8.12 2.52.36.72.24 1.32.6 1.8 1.08.48.48.84.96 1.08 1.44.24.48.36.96.36 1.44z"/></svg>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.717-.962 4.084-1.36 5.76-.168.7-.438 1.04-.72 1.06-.6.06-1.08-.36-1.68-.72-.96-.6-1.5-.96-2.46-1.56-.96-.6-1.68-.96-1.68-1.56 0-.3.24-.6.72-.96.48-.36 1.08-.72 1.44-.96.36-.24.72-.6.96-1.08.24-.48.36-.96.36-1.32 0-.36-.12-.72-.36-.96-.24-.24-.6-.36-1.08-.36-.48 0-.96.12-1.44.36-.48.24-.96.6-1.44.96-.48.36-.96.72-1.44 1.08-.48.36-.96.6-1.44.72-.48.12-.96.12-1.44 0-.48-.12-.84-.36-1.08-.72-.24-.36-.36-.84-.36-1.32 0-.48.12-.96.36-1.44.24-.48.6-.96 1.08-1.44.48-.48 1.08-.96 1.8-1.44.72-.48 1.56-.84 2.52-1.08.96-.24 1.92-.36 2.88-.36.96 0 1.8.12 2.52.36.72.24 1.32.6 1.8 1.08.48.48.84.96 1.08 1.44.24.48.36.96.36 1.44z"/></svg>
 </p>
 
-<div id="counter">заходов: ...</div>
+<p id="counter">заходов: ...</p>
 
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
@@ -40,62 +31,45 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const wrap = document.getElementById('canvas-wrap');
-const w = wrap.clientWidth || 600;
-const h = 340;
+const w = 600, h = 400;
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(40, w/h, 0.1, 100);
 camera.position.set(0, 0, 4);
 
-const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(w, h);
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 wrap.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableZoom = false;
 controls.enablePan = false;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 1.5;
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+scene.add(new THREE.AmbientLight(0xffffff, 0.9));
 const l1 = new THREE.DirectionalLight(0xffffff, 1.2); l1.position.set(5,5,5); scene.add(l1);
 const l2 = new THREE.DirectionalLight(0xffffff, 0.4); l2.position.set(-5,-5,-5); scene.add(l2);
 
 const loader = new THREE.TextureLoader();
-// текстура яблока (зелёные яблоки)
-const texture = loader.load('https://pics.freeartbackgrounds.com/midle/Green_Apples_Texture-1033.jpg');
+loader.setCrossOrigin('anonymous');
+const texture = loader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/640px-Red_Apple.jpg');
 texture.colorSpace = THREE.SRGBColorSpace;
 
-const mat = new THREE.MeshStandardMaterial({
-  map: texture,
-  roughness: 0.45,
-  metalness: 0.05
-});
-
+const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 0.05 });
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(1.2, 64, 64), mat);
 scene.add(sphere);
 
 function animate() {
   requestAnimationFrame(animate);
+  sphere.rotation.x += 0.005;
+  sphere.rotation.y += 0.008;
+  sphere.rotation.z += 0.003;
   controls.update();
   renderer.render(scene, camera);
 }
 animate();
-
-function onResize(){
-  const nw = wrap.clientWidth;
-  if(nw < 10) return;
-  renderer.setSize(nw, h);
-  camera.aspect = nw / h;
-  camera.updateProjectionMatrix();
-}
-window.addEventListener('resize', onResize);
-setTimeout(onResize, 100);
 </script>
 
 <script>
-// счётчик заходов через CountAPI
 fetch('https://api.countapi.xyz/hit/uxuxx.k.vu/visits')
   .then(r => r.json())
   .then(d => document.getElementById('counter').textContent = 'заходов: ' + d.value)
